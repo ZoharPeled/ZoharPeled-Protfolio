@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zohar Peled — Sound Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #FAF7F2;
+    --warm-brown: #8B6B47;
+    --deep-brown: #3D2B1F;
+    --terracotta: #C4714A;
+    --sand: #E8D9C5;
+    --soft-gray: #9A9287;
+    --text-dark: #2A1F16;
+    --text-mid: #6B5544;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text-dark); min-height: 100vh; }
+
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 3rem; border-bottom: 1px solid var(--sand);
+    position: sticky; top: 0; background: rgba(250,247,242,0.95);
+    backdrop-filter: blur(8px); z-index: 100;
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--deep-brown); letter-spacing: 0.02em; cursor: pointer; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    text-decoration: none; color: var(--text-mid); font-size: 0.875rem; font-weight: 400;
+    letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; cursor: pointer;
+  }
+  .nav-links a:hover { color: var(--terracotta); }
+  .nav-links a.active { color: var(--terracotta); border-bottom: 2px solid var(--terracotta); padding-bottom: 2px; }
+
+  .tab-page { display: none; }
+  .tab-page.active { display: block; }
+
+  /* ── HOME TAB ── */
+  .hero { padding: 6rem 3rem 5rem; max-width: 900px; }
+  .hero-tag { display: inline-block; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--terracotta); background: rgba(196,113,74,0.1); padding: 0.35rem 0.85rem; border-radius: 20px; margin-bottom: 1.75rem; font-weight: 500; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 1.1; color: var(--deep-brown); font-weight: 400; margin-bottom: 1.5rem; }
+  .hero h1 em { color: var(--terracotta); font-style: italic; }
+  .hero-sub { font-size: 1.05rem; color: var(--text-mid); max-width: 520px; line-height: 1.75; margin-bottom: 2.5rem; font-weight: 300; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--deep-brown); color: var(--cream); padding: 0.85rem 2rem; border-radius: 40px; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.02em; transition: background 0.2s, transform 0.15s; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; }
+  .hero-cta:hover { background: var(--terracotta); transform: translateY(-1px); }
+
+  .waveform { display: flex; align-items: center; gap: 3px; margin: 3.5rem 3rem 0; height: 60px; opacity: 0.35; }
+  .waveform span { display: block; width: 3px; border-radius: 2px; background: var(--warm-brown); animation: wave 1.4s ease-in-out infinite; }
+  @keyframes wave { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.3); } }
+
+  section { padding: 5rem 3rem; }
+  .section-label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft-gray); font-weight: 500; margin-bottom: 0.75rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--deep-brown); font-weight: 400; margin-bottom: 3rem; line-height: 1.2; }
+
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 2rem; }
+  @media (max-width: 600px) { .projects-grid { grid-template-columns: 1fr; } }
+
+  .project-card { background: white; border-radius: 16px; overflow: hidden; border: 1px solid var(--sand); transition: transform 0.2s, box-shadow 0.2s; }
+  .project-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(61,43,31,0.1); }
+
+  .video-wrapper { position: relative; width: 100%; padding-top: 56.25%; background: #1a1410; }
+  .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+  .project-body { padding: 1.25rem 1.5rem 1.5rem; }
+  .project-type { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta); font-weight: 500; margin-bottom: 0.4rem; }
+  .project-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--deep-brown); margin-bottom: 0.4rem; }
+  .project-desc { font-size: 0.85rem; color: var(--soft-gray); line-height: 1.6; }
+
+  .category-tabs { display: flex; gap: 0.75rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .cat-btn { background: none; border: 1px solid var(--sand); color: var(--text-mid); padding: 0.55rem 1.4rem; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; transition: all 0.2s; }
+  .cat-btn:hover { border-color: var(--terracotta); color: var(--terracotta); }
+  .cat-btn.active { background: var(--deep-brown); color: var(--cream); border-color: var(--deep-brown); }
+
+  .skills-section { background: var(--deep-brown); color: var(--cream); }
+  .skills-section .section-label { color: var(--warm-brown); }
+  .skills-section .section-title { color: var(--cream); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .skill-item { border: 1px solid rgba(232,217,197,0.15); border-radius: 12px; padding: 1.25rem; transition: border-color 0.2s, background 0.2s; }
+  .skill-item:hover { border-color: rgba(196,113,74,0.5); background: rgba(196,113,74,0.06); }
+  .skill-icon { font-size: 1.4rem; margin-bottom: 0.75rem; display: block; }
+  .skill-name { font-size: 0.9rem; font-weight: 500; color: var(--cream); margin-bottom: 0.3rem; }
+  .skill-desc { font-size: 0.78rem; color: var(--warm-brown); line-height: 1.5; }
+  .skill-bar { margin-top: 0.85rem; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+  .skill-fill { height: 100%; background: var(--terracotta); border-radius: 2px; }
+
+  .contact-section { background: var(--sand); }
+  .contact-inner { max-width: 600px; }
+  .contact-section .section-title { margin-bottom: 1rem; }
+  .contact-sub { color: var(--text-mid); font-size: 1rem; line-height: 1.7; margin-bottom: 2.5rem; font-weight: 300; }
+  .contact-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .contact-link { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 40px; text-decoration: none; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.02em; transition: transform 0.15s, background 0.2s; }
+  .contact-link:hover { transform: translateY(-2px); }
+  .contact-link.primary { background: var(--deep-brown); color: var(--cream); }
+  .contact-link.primary:hover { background: var(--terracotta); }
+  .contact-link.secondary { background: white; color: var(--deep-brown); border: 1px solid var(--warm-brown); }
+
+  /* ── ABOUT TAB ── */
+  .about-page { padding: 5rem 3rem; }
+  .about-hero { max-width: 700px; margin-bottom: 4rem; }
+  .about-hero .hero-tag { display: inline-block; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--terracotta); background: rgba(196,113,74,0.1); padding: 0.35rem 0.85rem; border-radius: 20px; margin-bottom: 1.75rem; font-weight: 500; }
+  .about-hero h2 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--deep-brown); font-weight: 400; margin-bottom: 1rem; line-height: 1.15; }
+  .about-hero p { font-size: 1.05rem; color: var(--text-mid); line-height: 1.8; font-weight: 300; }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem; }
+  @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; } }
+
+  .about-block { margin-bottom: 2.5rem; }
+  .about-block-label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft-gray); font-weight: 500; margin-bottom: 1rem; }
+  .about-block p { font-size: 0.95rem; color: var(--text-mid); line-height: 1.85; font-weight: 300; }
+
+  .edu-card { background: white; border: 1px solid var(--sand); border-radius: 14px; padding: 1.25rem 1.5rem; }
+  .edu-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--deep-brown); margin-bottom: 0.25rem; }
+  .edu-school { font-size: 0.78rem; color: var(--terracotta); font-weight: 500; letter-spacing: 0.04em; margin-bottom: 0.6rem; }
+  .edu-desc { font-size: 0.8rem; color: var(--soft-gray); line-height: 1.6; }
+
+  .achievement-card { display: flex; align-items: flex-start; gap: 0.75rem; background: rgba(196,113,74,0.08); border-radius: 12px; padding: 1rem 1.25rem; margin-top: 1.25rem; }
+  .achievement-card span { font-size: 1.3rem; flex-shrink: 0; }
+  .achievement-card strong { display: block; font-size: 0.88rem; color: var(--deep-brown); margin-bottom: 0.2rem; }
+  .achievement-card small { font-size: 0.78rem; color: var(--soft-gray); }
+
+  .exp-list { display: flex; flex-direction: column; gap: 2rem; }
+  .exp-item { border-left: 3px solid var(--terracotta); padding-left: 1.5rem; }
+  .exp-date { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft-gray); margin-bottom: 0.3rem; }
+  .exp-role { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--deep-brown); margin-bottom: 0.15rem; }
+  .exp-company { font-size: 0.82rem; color: var(--terracotta); font-weight: 500; margin-bottom: 0.5rem; }
+  .exp-desc { font-size: 0.83rem; color: var(--text-mid); line-height: 1.7; }
+  .exp-examples { margin-top: 0.5rem; font-size: 0.78rem; color: var(--soft-gray); font-style: italic; }
+
+  footer { padding: 2rem 3rem; border-top: 1px solid var(--sand); display: flex; justify-content: space-between; align-items: center; }
+  .footer-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--deep-brown); }
+  .footer-copy { font-size: 0.78rem; color: var(--soft-gray); }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo" onclick="switchTab('home')">Zohar Peled</span>
+  <div class="nav-links">
+    <a onclick="switchTab('home')" id="nav-home" class="active">Work</a>
+    <a onclick="switchTab('about')" id="nav-about">About</a>
+  </div>
+</nav>
+
+<!-- ═══════ HOME TAB ═══════ -->
+<div id="tab-home" class="tab-page active">
+
+  <div class="hero">
+    <span class="hero-tag">Sound Designer</span>
+    <h1>Crafting worlds<br>through <em>sound</em></h1>
+    <p class="hero-sub">Hello, and thanks for stopping by! I'm a sound designer with experience across video games, TV shows, movies, and commercials — because the right sound changes everything.</p>
+    <button class="hero-cta" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polygon points="5,3 13,8 5,13" fill="currentColor"/></svg>
+      Watch my work
+    </button>
+  </div>
+
+  <div class="waveform" id="waveform"></div>
+
+  <section id="work">
+    <p class="section-label">Selected work</p>
+    <h2 class="section-title">Projects</h2>
+
+    <div class="category-tabs">
+      <button class="cat-btn active" onclick="filterProjects('tv')">TV & Cinema</button>
+      <button class="cat-btn" onclick="filterProjects('games')">Video Games</button>
+      <button class="cat-btn" onclick="filterProjects('commercial')">Commercials</button>
+    </div>
+
+    <div class="projects-grid">
+
+      <div class="project-card" data-category="games" style="display:none">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/D5lqN0zbeDc?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="project-body">
+          <p class="project-type">Game Audio · Cinematic</p>
+          <p class="project-name">Helldivers 2 Cinematic</p>
+          <p class="project-desc">Sound redesign for a Helldivers 2 cinematic. Through carefully built layers, I crafted the sounds of the guns, aliens, and the chaos of galactic warfare, weaving tension and atmosphere into every moment of the fight.</p>
+        </div>
+      </div>
+
+      <div class="project-card" data-category="games" style="display:none">
+        <div class="video-wrapper">
+          <iframe src="https://player.vimeo.com/video/1188804962" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="project-body">
+          <p class="project-type">Game Audio · Sound Redesign</p>
+          <p class="project-name">The Last of Us</p>
+          <p class="project-desc">A full sound redesign where every foley and SFX was recorded and crafted from scratch. Used vocal separation tools including RX11 and AI to cleanly strip the original VO from the game audio, rebuilding the entire sonic world from the ground up.</p>
+        </div>
+      </div>
+
+      <div class="project-card" data-category="games" style="display:none">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/fgbXNSkYvR8?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="project-body">
+          <p class="project-type">Game Audio · Sound Redesign</p>
+          <p class="project-name">DTDA Trailer Sound Redesign</p>
+          <p class="project-desc">Full sound redesign for the DTDA trailer. A savage experience where every sonic element was rebuilt from scratch, with a focus on matching the brutality of the game with the sounds I created for it.</p>
+        </div>
+      </div>
+
+      <div class="project-card" data-category="games" style="display:none">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/ScRe2Qux5-Y?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="project-body">
+          <p class="project-type">Game Audio · Horror</p>
+          <p class="project-name">Little Nightmares 2</p>
+          <p class="project-desc">Sound redesign for Little Nightmares 2, a psychological horror game where sound is the storytelling. Built dread and tension through layered ambience, foley, and carefully placed silence, pulling the listener deeper into fear with every unsettling creak and distant cry.</p>
+        </div>
+      </div>
+
+      <div class="project-card" data-category="games" style="display:none">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/pO-EV1wiFe0?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="project-body">
+          <p class="project-type">Game Audio · Combat</p>
+          <p class="project-name">God of War: Ragnarök</p>
+          <p class="project-desc">Sound redesign for a God of War: Ragnarök gameplay and fight sequence. I recorded foley and ambiance and created all SFX specifically for this project. Using VO separation tools and AI, I stripped the original voice from the game audio, which allowed me to input my own EQ and rebuild the entire sonic layer from scratch.</p>
+        </div>
+      </div>
+
+      <div class="project-card" data-category="games" style="display:none">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/2gi_FI8MvFc?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="project-body">
+          <p class="project-type">Game Audio · Sound Redesign</p>
+          <p class="project-name">Sea of Stars</p>
+          <p class="project-desc">Sound redesign for Sea of Stars, a pixel RPG. Every SFX and music track was created specifically for this project to match the game's world, atmosphere, and visual style.</p>
+        </div>
+      </div>
+
+      <div class="project-card" data-category="tv">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/FbdU2zTgxYE?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="project-body">
+          <p class="project-type">TV & Cinema</p>
+          <p class="project-name">TV & Cinema Projects</p>
+          <p class="project-desc">A collection of sound work spanning the full range of screen storytelling. From feature films and reality TV productions to student films and news stories, each project brought its own sonic challenges and demanded a unique approach to audio.</p>
+        </div>
+      </div>
+
+      <div class="project-card" data-category="commercial" style="display:none">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/y_FgChTEY9M?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="project-body">
+          <p class="project-type">Commercial</p>
+          <p class="project-name">Commercial Projects</p>
+          <p class="project-desc">Sound design and mixing for a range of commercial productions aired on TV and online. Every spot was crafted to grab attention and leave an impression, with audio tailored to match the brand's message and energy.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="skills" class="skills-section">
+    <p class="section-label">What I bring</p>
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-item"><span class="skill-icon">🎚️</span><p class="skill-name">Pro Tools / Nuendo</p><p class="skill-desc">Full mixing, editing, and production workflows</p><div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div></div>
+      <div class="skill-item"><span class="skill-icon">🔊</span><p class="skill-name">Foley & Field Recording</p><p class="skill-desc">Capturing real-world texture and atmosphere</p><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div></div>
+      <div class="skill-item"><span class="skill-icon">🎛️</span><p class="skill-name">Wwise / FMOD</p><p class="skill-desc">Interactive audio for games and installations</p><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+      <div class="skill-item"><span class="skill-icon">🌀</span><p class="skill-name">Synthesis & Sound Design</p><p class="skill-desc">Serum, Max/MSP, granular and modular design</p><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+      <div class="skill-item"><span class="skill-icon">🎞️</span><p class="skill-name">Dialogue Editing & Recording</p><p class="skill-desc">Dialogue editing and recording across video games, TV shows, and commercials — from ADR and clean edits to Dolby Atmos mixing</p><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+      <div class="skill-item"><span class="skill-icon">✨</span><p class="skill-name">Spatial Audio</p><p class="skill-desc">Binaural, ambisonics, and immersive formats</p><div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div></div>
+      <div class="skill-item"><span class="skill-icon">💥</span><p class="skill-name">SFX Creation</p><p class="skill-desc">Designing original sound effects from scratch — layering, processing, and shaping sounds to fit any world or moment</p><div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div></div>
+      <div class="skill-item"><span class="skill-icon">🔧</span><p class="skill-name">iZotope RX11</p><p class="skill-desc">Fluent in iZotope RX11 for advanced audio repair, noise reduction, and restoration for clean, professional results</p><div class="skill-bar"><div class="skill-fill" style="width:87%"></div></div></div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact-section">
+    <div class="contact-inner">
+      <p class="section-label">Get in touch</p>
+      <h2 class="section-title">Let's make<br>something together</h2>
+      <p class="contact-sub">Whether it's a game, a film, a brand, or something that doesn't have a name yet — I'd love to hear about it.</p>
+      <div class="contact-links">
+        <a href="mailto:Thepeled01@gmail.com" class="contact-link primary">✉ Thepeled01@gmail.com</a>
+        <a href="https://www.linkedin.com/in/zohar-peled-3122a222a/" target="_blank" class="contact-link secondary">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══════ ABOUT TAB ═══════ -->
+<div id="tab-about" class="tab-page">
+  <div class="about-page">
+
+    <div class="about-hero">
+      <span class="hero-tag">About Me</span>
+      <h2>Zohar Peled</h2>
+      <p>Sound Designer & Audio Engineer based in Ramat Gan, Israel — passionate about crafting the sounds that make every moment hit harder.</p>
+    </div>
+
+    <div class="about-grid">
+
+      <div>
+        <div class="about-block">
+          <p class="about-block-label">Summary</p>
+          <p>Skilled in making sound design for TV shows, movies, video games, and advertisements. Experienced in mixing stereo and 5.1, with hands-on experience in voice acting direction for dubbing projects, self-taught foley recording, and sound redesign across 40+ scenes.</p>
+        </div>
+
+        <div class="about-block">
+          <p class="about-block-label">Education</p>
+          <div class="edu-card">
+            <p class="edu-title">Diploma in Sound Engineering</p>
+            <p class="edu-school">Yoav Gera Sound Engineering School · Graduated 2025</p>
+            <p class="edu-desc">Completed a comprehensive 3-year program focused on studio recording, mixing, and sound design. Final Project: Full sound redesign for Indie and AAA video games — including effects, ambience, foley, and interactive audio implementation.</p>
+          </div>
+          <div class="achievement-card">
+            <span>🏆</span>
+            <div>
+              <strong>Excellence Scholarship 2023</strong>
+              <small>Yoav Gera College of Sound Design</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="about-block-label">Experience</p>
+        <div class="exp-list">
+
+          <div class="exp-item">
+            <p class="exp-date">2022 – 2025</p>
+            <p class="exp-role">Sound Engineer</p>
+            <p class="exp-company">VideoFilm Dubbing Company</p>
+            <p class="exp-desc">Recorded and mixed audio for over 30 television shows, ranging from local productions to high-profile Netflix titles. Collaborated with directors and editors to deliver consistent, high-quality adapted audio. Handled both voice recording and full episode mixing in a fast-paced dubbing environment.</p>
+            <p class="exp-examples">Asterix and Obelix the Big Fight · Digimon Ghost Stories · Inazuma 11 · Hotel Transylvania</p>
+          </div>
+
+          <div class="exp-item">
+            <p class="exp-date">2021 – Today</p>
+            <p class="exp-role">Sound Designer</p>
+            <p class="exp-company">Freelance</p>
+            <p class="exp-desc">Delivering mixing and sound design across a range of creative projects — from indie games, TV shows, and commercials to graduating film students and high-profile productions like the Master Chef reality show. Every project gets a unique sound identity built from the ground up.</p>
+          </div>
+
+          <div class="exp-item">
+            <p class="exp-date">2023 – 2024</p>
+            <p class="exp-role">Sound Engineer</p>
+            <p class="exp-company">News Channel 12</p>
+            <p class="exp-desc">Responsible for handling news items and recording live interviews.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-name">Zohar Peled</span>
+  <span class="footer-copy">© 2026</span>
+</footer>
+
+<script>
+  const waveEl = document.getElementById('waveform');
+  const heights = [10,18,28,22,36,42,30,50,45,38,55,48,60,52,44,38,50,42,34,28,40,52,46,36,28,20,32,44,56,48,36,24,16,28,40,50,44,32,20,12];
+  heights.forEach((h, i) => {
+    const bar = document.createElement('span');
+    bar.style.height = h + 'px';
+    bar.style.animationDelay = (i * 0.04) + 's';
+    waveEl.appendChild(bar);
+  });
+
+  function filterProjects(category) {
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.style.display = card.dataset.category === category ? 'block' : 'none';
+    });
+    document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('nav-' + tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
